@@ -17,27 +17,27 @@ const menuList = [
           },
           {
               title:'Loading',
-              key:'/ui/admin/loadings',
+              key:'/admin/ui/loadings',
           },
           {
               title:'通知提醒',
-              key:'/ui/admin/notification',
+              key:'/admin/ui/notification',
           },
           {
               title:'全局Message',
-              key:'/ui/admin/messages',
+              key:'/admin/ui/messages',
           },
           {
               title:'Tab页签',
-              key:'/ui/admin/tabs',
+              key:'/admin/ui/tabs',
           },
           {
               title:'图片画廊',
-              key:'/ui/admin/gallery',
+              key:'/admin/ui/gallery',
           },
           {
               title:'轮播图',
-              key:'/ui/admin/carousel',
+              key:'/admin/ui/carousel',
           }
       ]
   },

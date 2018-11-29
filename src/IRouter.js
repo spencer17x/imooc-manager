@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import App from './App';
-import Home from './pages/home';
 import Admin from './admin';
-import { HashRouter, Route, Redirect } from 'react-router-dom';
-import { Switch } from 'antd';
+import Buttons from './pages/ui/buttons';
+import Login from './pages/login';
+import NoMatch from "./pages/noMatch";
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import Modals from './pages/ui/modals';
 
 export default class IRouter extends Component {
   render () {
     return (
       <HashRouter>
         <App>
-          <Admin>
-            <Switch>
-              <Route path="/admin" render={() => 
-                <div>
-                  <Route path="/admin" component={Home}/>
-                </div>
-              }/>
-            </Switch>
-          </Admin>
-          <Redirect to="/admin"/>
+          <Route path="/login" component={Login}/>
+          <Route path="/admin" render={() => 
+            <Admin>
+              <Switch>
+                <Route path="/admin/ui/buttons" component={Buttons}/>
+                <Route path="/admin/ui/modals" component={Modals}/>
+                <Route component={NoMatch}/>
+              </Switch>
+            </Admin>
+          }/>
         </App>
       </HashRouter>
     )
