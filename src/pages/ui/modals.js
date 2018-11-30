@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Button, Modal } from "antd";
 import './ui.less';
 
-export default class Buttons extends Component {
+export default class Modals extends Component {
   state = {
     showModal1: false,
     showModal2: false,
