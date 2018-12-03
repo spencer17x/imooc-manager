@@ -9,11 +9,12 @@ import Tabs from './pages/ui/tabs';
 import Gallery from './pages/ui/gallery';
 import Carousels from './pages/ui/carousel';
 import FormLogin from './pages/form/login';
+import FormRegister from './pages/form/register';
 import Login from './pages/login';
-import NoMatch from "./pages/noMatch";
+import NoMatch from './pages/noMatch';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Modals from './pages/ui/modals';
-import Home from "./pages/home";
+import Home from './pages/home';
 
 export default class IRouter extends Component {
   render () {
@@ -35,6 +36,7 @@ export default class IRouter extends Component {
                   <Route path="/admin/ui/gallery" component={Gallery}/>
                   <Route path="/admin/ui/carousel" component={Carousels}/>
                   <Route path="/admin/form/login" component={FormLogin}/>
+                  <Route path="/admin/form/reg" component={FormRegister}/>
                   <Route component={NoMatch}/>
                 </Switch>
               </Admin>
