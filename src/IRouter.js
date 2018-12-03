@@ -8,6 +8,7 @@ import Messages from './pages/ui/messages';
 import Tabs from './pages/ui/tabs';
 import Gallery from './pages/ui/gallery';
 import Carousels from './pages/ui/carousel';
+import FormLogin from './pages/form/login';
 import Login from './pages/login';
 import NoMatch from "./pages/noMatch";
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
@@ -33,6 +34,7 @@ export default class IRouter extends Component {
                   <Route path="/admin/ui/tabs" component={Tabs}/>
                   <Route path="/admin/ui/gallery" component={Gallery}/>
                   <Route path="/admin/ui/carousel" component={Carousels}/>
+                  <Route path="/admin/form/login" component={FormLogin}/>
                   <Route component={NoMatch}/>
                 </Switch>
               </Admin>
