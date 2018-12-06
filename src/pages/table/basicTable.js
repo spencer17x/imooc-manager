@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Table} from 'antd';
-import axios from 'axios';
+import { Modal } from 'antd';
+import axios from '../../axios';
 
 export default class BasicTable extends Component {
   state = {
@@ -16,13 +17,34 @@ export default class BasicTable extends Component {
         dataIndex: 'userName'
       }, {
         title: '性别',
-        dataIndex: 'sex'
+        dataIndex: 'sex',
+        render (sex) {
+          return sex === 1 ? '男' : '女'
+        }
       }, {
         title: '状态',
-        dataIndex: 'state'
+        dataIndex: 'state',
+        render (state) {
+          const config = {
+            '1': 'react',
+            '2': 'vue',
+            '3': 'angular',
+            '4': 'backbone'
+          };
+          return config[state]
+        }
       }, {
         title: '爱好',
-        dataIndex: 'interest'
+        dataIndex: 'interest',
+        render (interest) {
+          const config = {
+            '1': '篮球',
+            '2': '乒乓球',
+            '3': '台球',
+            '4': '羽毛球'
+          };
+          return config[interest];
+        }
       }, {
         title: '生日',
         dataIndex: 'birthday'
@@ -42,11 +64,13 @@ export default class BasicTable extends Component {
             pagination={false}
             columns={columns}
             dataSource={this.state.dataSource}
+            rowKey="id"
           />
         </Card>
         <Card title="动态数据渲染表格" className="card-top">
           <Table 
             bordered
+            rowKey="id"
             pagination={false}
             columns={columns}
             dataSource={this.state.dataSource2}
@@ -56,21 +80,31 @@ export default class BasicTable extends Component {
     )
   }
   request = () => {
-    const baseUrl = 'https://easy-mock.com/mock/5c07d5c95a35be334b3a4f09/mockapi';
-    axios.get(`${baseUrl}/table/list`)
-      .then(res => {
-        if (res.status === 200 && res.data.code === 0) {
-          const dataSource2 = res.data.result;
-          this.setState({
-            dataSource2
-          })
-        }
+    axios.ajax({
+      url: 'table/list',
+      method: 'get',
+      data: {
+        params: {
+          page: 1
+        },
+        isShowLoading: true
+      }
+    }).then(res => {
+      if (res.code === 20000) {
+        this.setState({
+          dataSource2: res.result
+        })
+      }
+    }).catch(err => {
+      Modal.warning({
+        title: '警告',
+        content: err + ''
       })
+    });
   }
   componentDidMount () {
     const dataSource = [
       {
-        key: '0',
         id: '0',
         userName: 'Jack',
         sex: '1',
@@ -81,7 +115,6 @@ export default class BasicTable extends Component {
         time: '09:09'
       },
       {
-        key: '1',
         id: '1',
         userName: 'Jall',
         sex: '1',
@@ -92,7 +125,6 @@ export default class BasicTable extends Component {
         time: '09:09'
       },
       {
-        key: '2',
         id: '2',
         userName: 'Narr',
         sex: '1',
