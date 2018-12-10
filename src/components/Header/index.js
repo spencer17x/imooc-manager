@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
 import axios from '../../axios';
-import formatTime from '../../utils/utils';
+import Utils from '../../utils/utils';
 import './style.less';
 
 export default class Header extends Component {
@@ -53,7 +53,7 @@ export default class Header extends Component {
   getCurrentTime = () => {
     setInterval(() => {
       const time = new Date().getTime();
-      const currentTime = formatTime(time);
+      const currentTime = Utils.formateDate(time);
       this.setState({
         currentTime
       });

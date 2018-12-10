@@ -16,6 +16,7 @@ import NoMatch from './pages/noMatch';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Modals from './pages/ui/modals';
 import Home from './pages/home';
+import HighTable from './pages/table/highTable';
 
 export default class IRouter extends Component {
   render () {
@@ -39,6 +40,7 @@ export default class IRouter extends Component {
                   <Route path="/admin/form/login" component={FormLogin}/>
                   <Route path="/admin/form/reg" component={FormRegister}/>
                   <Route path="/admin/table/basic" component={BasicTable}/>
+                  <Route path="/admin/table/high" component={HighTable}/>
                   <Route component={NoMatch}/>
                 </Switch>
               </Admin>

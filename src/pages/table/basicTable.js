@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Card, Table} from 'antd';
-import { Modal } from 'antd';
+import { Card, Table, Button, Modal, message } from 'antd';
 import axios from '../../axios';
+import Utils from '../../utils/utils';
 
 export default class BasicTable extends Component {
   state = {
     dataSource2: []
+  }
+  params = {
+    page: 1
   }
   render () {
     const columns = [
@@ -55,7 +58,21 @@ export default class BasicTable extends Component {
         title: '早起时间',
         dataIndex: 'time'
       }, 
-    ]
+    ];
+    const rowSelection = {
+      type: 'radio',
+      selectedRowKeys: this.state.selectedRowKeys
+    }
+    const rowCheckSelection = {
+      type: 'checkbox',
+      selectedRowKeys: this.state.selectedCheckKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selectedCheckKeys: selectedRowKeys,
+          selectedCheckRows: selectedRows
+        })
+      }
+    }
     return (
       <div>
         <Card title="基础表格">
@@ -67,7 +84,7 @@ export default class BasicTable extends Component {
             rowKey="id"
           />
         </Card>
-        <Card title="动态数据渲染表格" className="card-top">
+        <Card title="动态数据渲染表格-Mock" className="card-top">
           <Table 
             bordered
             rowKey="id"
@@ -76,8 +93,72 @@ export default class BasicTable extends Component {
             dataSource={this.state.dataSource2}
           />
         </Card>
+        <Card title="Mock-单选" className="card-top">
+          <Table 
+            bordered
+            rowKey="id"
+            pagination={false}
+            columns={columns}
+            rowSelection={rowSelection}
+            dataSource={this.state.dataSource2}
+            onRow={(record, index) => {
+              return {
+                onClick: () => {
+                  this.onRowClick(record, index)
+                }
+              }
+            }}
+          />
+        </Card>
+        <Card title="Mock-多选" className="card-top">
+          <div style={{marginBottom: '10px'}}>
+            <Button onClick={this.handleDel}>删除</Button>
+          </div>
+          <Table 
+            bordered
+            rowKey="id"
+            pagination={false}
+            columns={columns}
+            rowSelection={rowCheckSelection}
+            dataSource={this.state.dataSource2}
+          />
+        </Card>
+        <Card title="Mock-分页" className="card-top">
+          <Table 
+            bordered
+            rowKey="id"
+            pagination={this.state.pagination}
+            columns={columns}
+            dataSource={this.state.dataSource2}
+          />
+        </Card>
       </div>
     )
+  }
+  // 多选执行删除动作
+  handleDel = () => {
+    let rows = this.state.selectedCheckRows;
+    let ids = [];
+    rows.map(item => ids.push(item.id))
+    Modal.confirm({
+      content: `您确定要删除这些数据吗？${ids.join(',')}`,
+      onOk: () => {
+        message.success('删除成功');
+        this.request();
+        this.setState({
+          selectedCheckKeys: [],
+          selectedCheckRows: []
+        })
+        // const { dataSource2 } = this.state;
+        // ids.map((item, index) => dataSource2.splice(item - index - 1, 1));
+        // dataSource2.map((item, index) => item.id = index)
+        // this.setState({
+        //   dataSource2,
+        //   selectedCheckKeys: [],
+        //   selectedCheckRows: []
+        // })
+      }
+    })
   }
   request = () => {
     axios.ajax({
@@ -85,14 +166,19 @@ export default class BasicTable extends Component {
       method: 'get',
       data: {
         params: {
-          page: 1
+          page: this.params.page
         },
         isShowLoading: true
       }
     }).then(res => {
       if (res.code === 20000) {
         this.setState({
-          dataSource2: res.result
+          dataSource2: res.result.list,
+          pagination: Utils.pagination(res, (current) => {
+            // to-do
+            this.params.page = current;
+            this.request();
+          })
         })
       }
     }).catch(err => {
@@ -100,6 +186,13 @@ export default class BasicTable extends Component {
         title: '警告',
         content: err + ''
       })
+    });
+  }
+  onRowClick = (record, index) => {
+    let selectKey = [index + 1];
+    this.setState({
+      selectedRowKeys: selectKey,
+      selectedItem: record
     });
   }
   componentDidMount () {
