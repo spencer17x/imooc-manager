@@ -162,7 +162,7 @@ export default class BasicTable extends Component {
   }
   request = () => {
     axios.ajax({
-      url: 'table/list',
+      url: '/table/list',
       method: 'get',
       data: {
         params: {

@@ -18,7 +18,7 @@ export default class Axios {
   }
 
   static ajax(options) {
-    const baseApi = 'https://easy-mock.com/mock/5c07d5c95a35be334b3a4f09/mockapi/';
+    const baseApi = 'https://easy-mock.com/mock/5c07d5c95a35be334b3a4f09/mockapi';
     let loading;
     if (options.data && options.data.isShowLoading) {
       loading = document.querySelector('#ajaxLoading');
