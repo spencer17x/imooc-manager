@@ -1,12 +1,106 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from '../../axios';
 import Utils from '../../utils/utils';
 import './city.less';
 import { Card, Form, Select, Button, Table, Modal, Radio } from 'antd';
 
 const Option = Select.Option
+class City extends Component {
+  render () {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <div>
+        <Card>
+          <Form layout="inline">
+            <Form.Item
+              label="城市"
+            >
+              {
+                getFieldDecorator('city_name')(
+                  <Select
+                    placeholder="全部"
+                    style={{width: 90}}
+                  >
+                    <Option value="0">全部</Option>
+                    <Option value="1">北京市</Option>
+                    <Option value="2">天津市</Option>
+                  </Select>
+                )
+              }
+            </Form.Item>
+            <Form.Item
+              label="用车模式"
+            >
+              {
+                getFieldDecorator('stop_mode')(
+                  <Select
+                    placeholder="全部"
+                    style={{width: 140}}
+                  >
+                    <Option value="0">全部</Option>
+                    <Option value="1">指定停车点模式</Option>
+                    <Option value="2">禁停区模式</Option>
+                  </Select>
+                )
+              }
+            </Form.Item>
+            <Form.Item
+              label="营运模式"
+            >
+              {
+                getFieldDecorator('use_mode')(
+                  <Select
+                    placeholder="全部"
+                    style={{width: 90}}
+                  >
+                    <Option value="0">全部</Option>
+                    <Option value="1">自营</Option>
+                    <Option value="2">加盟</Option>
+                  </Select>
+                )
+              }
+            </Form.Item>
+            <Form.Item
+              label="加盟商授权状态"
+            >
+              {
+                getFieldDecorator('auth_mode')(
+                  <Select
+                    placeholder="全部"
+                    style={{width: 90}}
+                  >
+                    <Option value="0">全部</Option>
+                    <Option value="1">已授权</Option>
+                    <Option value="2">未授权</Option>
+                  </Select>
+                )
+              }
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={this.handleSearch}>查询</Button>
+              <Button style={{marginLeft: 20}} onClick={this.handleReset}>重置</Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+    )
+  }
+  // 查询
+  handleSearch = () => {
+    this.props.form.validateFields((err,values) => {
+      if (!err) {
+        console.log(values)
+        this.props.requestList()
+      }
+    })
+  }
+  // 重置
+  handleReset = () => {
+    this.props.form.resetFields()
+  }
+}
 
-export default class City extends Component {
+export default class OpenCityForm extends Component {
   state = {
     dataSource: [],
     visible: false
@@ -15,6 +109,7 @@ export default class City extends Component {
     page: 1
   }
   render () {
+    const { getFieldDecorator } = this.props.form;
     const columns = [{
       title: '城市Id',
       dataIndex: 'city_id',
@@ -61,62 +156,7 @@ export default class City extends Component {
     }
     return (
       <div>
-        <Card>
-          <Form layout="inline">
-            <Form.Item
-              label="城市"
-            >
-              <Select
-                placeholder="全部"
-                style={{width: 90}}
-              >
-                <Option value="0">全部</Option>
-                <Option value="1">北京市</Option>
-                <Option value="2">天津市</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="用车模式"
-            >
-              <Select
-                placeholder="全部"
-                style={{width: 140}}
-              >
-                <Option value="0">全部</Option>
-                <Option value="1">指定停车点模式</Option>
-                <Option value="2">禁停区模式</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="营运模式"
-            >
-              <Select
-                placeholder="全部"
-                style={{width: 90}}
-              >
-                <Option value="0">全部</Option>
-                <Option value="1">自营</Option>
-                <Option value="2">加盟</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="加盟商授权状态"
-            >
-              <Select
-                placeholder="全部"
-                style={{width: 90}}
-              >
-                <Option value="0">全部</Option>
-                <Option value="1">已授权</Option>
-                <Option value="2">未授权</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary">查询</Button>
-              <Button style={{marginLeft: 20}}>重置</Button>
-            </Form.Item>
-          </Form>
-        </Card>
+        <City requestList={this.requestList}/>
         <div className="card-top city-wrapper">
           <Button type="primary" style={{margin: '20px 0 20px 20px'}} onClick={this.openCity}>开通城市</Button>
           <Table
@@ -138,24 +178,65 @@ export default class City extends Component {
         >
           <Form layout="horizontal">
             <Form.Item label="选择城市" {...formItemLayout}>
-              <Select style={{width: 100}}>
-                <Option value="0">全部</Option>
-                <Option value="1">北京市</Option>
-                <Option value="2">天津市</Option>
-              </Select>
+              {
+                getFieldDecorator('open_city_name', {
+                  initialValue: '1'
+                })(
+                  <Select style={{width: 100}}>
+                    <Option value="0">全部</Option>
+                    <Option value="1">北京市</Option>
+                    <Option value="2">天津市</Option>
+                  </Select>
+                )
+              }
             </Form.Item>
             <Form.Item label="营运模式" {...formItemLayout}>
-              <Radio>自营</Radio>
-              <Radio>加盟</Radio>
+              {
+                getFieldDecorator('open_city_use_mode', {
+                  initialValue: '1'
+                })(
+                  <Radio.Group>
+                    <Radio value="1">自营</Radio>
+                    <Radio value="2">加盟</Radio>
+                  </Radio.Group>
+                )
+              }
             </Form.Item>
             <Form.Item label="用车模式" {...formItemLayout}>
-              <Radio>指定停车点模式</Radio>
-              <Radio>禁停区模式</Radio>
+              {
+                getFieldDecorator('open_city_stop_mode', {
+                  initialValue: '1'
+                })(
+                  <Radio.Group>  
+                    <Radio value="1">指定停车点模式</Radio>
+                    <Radio value="2">禁停区模式</Radio>
+                  </Radio.Group>
+                )
+              }
             </Form.Item>
           </Form>
         </Modal>
       </div>
     )
+  }
+  // 开通城市
+  openCity = () => {
+    this.setState({
+      visible: true
+    })
+  }
+  // 确认开通城市
+  openCityOk = () => {
+    this.setState({
+      visible: false
+    })
+    // this.requestList();
+    this.props.form.validateFields((err,values) => {
+      if (!err) {
+        console.log(values)
+        this.requestList()
+      }
+    })
   }
   componentDidMount () {
     this.requestList();
@@ -192,18 +273,7 @@ export default class City extends Component {
       })
     });
   }
-  // 开通城市
-  openCity = () => {
-    this.setState({
-      visible: true
-    })
-  }
-  // 确认开通城市
-  openCityOk = () => {
-    this.setState({
-      visible: false
-    })
-    this.requestList();
-  }
 }
+OpenCityForm = Form.create()(OpenCityForm)
 
+City = Form.create()(City)
