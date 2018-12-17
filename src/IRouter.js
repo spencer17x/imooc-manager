@@ -18,6 +18,7 @@ import Modals from './pages/ui/modals';
 import Home from './pages/home';
 import HighTable from './pages/table/highTable';
 import City from './pages/city/city';
+import Order from './pages/order/order';
 
 export default class IRouter extends Component {
   render () {
@@ -43,6 +44,7 @@ export default class IRouter extends Component {
                   <Route path="/admin/table/basic" component={BasicTable}/>
                   <Route path="/admin/table/high" component={HighTable}/>
                   <Route path="/admin/city" component={City}/>
+                  <Route path="/admin/order" component={Order}/>
                   <Route component={NoMatch}/>
                 </Switch>
               </Admin>
