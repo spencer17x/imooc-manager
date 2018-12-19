@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './order.less'
 import axios from '../../axios'
-import { Card, Select, Form, DatePicker, Button, Table } from 'antd'
+import { Card, Select, Form, DatePicker, Button, Table, Modal } from 'antd'
 
 export default class Order extends Component {
   render() {
@@ -159,7 +159,7 @@ class FilterForm extends Component {
     }
     return <div className="card-top" style={{background: '#fff'}}>
       <div style={{padding: '20px'}}>
-        <Button type="primary">订单详情</Button>
+        <Button type="primary" onClick={this.handleOrderClick}>订单详情</Button>
         <Button type="primary" style={{marginLeft: 20}}>结束订单</Button>
       </div>
       <Table
@@ -204,8 +204,21 @@ class FilterForm extends Component {
   }
   handleClickRow = (record, index) => {
     this.setState({
-      selectedRowKeys: [index]
+      selectedRowKeys: [index],
+      rowSelectedItem: record
     })
+  }
+  handleOrderClick = () => {
+    const { rowSelectedItem, selectedRowKeys } = this.state
+    console.log(window.location)
+    if (!rowSelectedItem) {
+      Modal.info({
+        title: '提示',
+        content: '请选择订单'
+      })
+    } else {
+      window.open(window.origin + '/#/common/order/detail/' + selectedRowKeys[0])
+    }
   }
 }
 FilterForm = Form.create()(FilterForm)

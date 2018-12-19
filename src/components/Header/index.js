@@ -6,15 +6,23 @@ import './style.less';
 
 export default class Header extends Component {
   render () {
+    const isOrderDetail = this.props.part === 'orderDetail';
     return (
-      <div className="header">
+      <div className="header" style={{background: isOrderDetail ? '#1890ff' : '#fff'}}>
         <Row className="header-top">
           <Col span="24">
-            <span>欢迎，{this.state.userName}</span>
+            {
+              isOrderDetail ?  <div className="order-detail-wrap">
+              <img src="/assets/logo-ant.svg" alt="" className="order-detail-logo"/>
+              <div>React.JS通用管理系统</div>
+            </div> : null
+            }
+            <span style={{color: isOrderDetail ? '#fff' : ''}}>欢迎，{this.state.userName}</span>
             <a href="http://localhost:3000/">退出</a>
           </Col>
         </Row>
-        <Row className="breadcrumb">
+        {
+          isOrderDetail ? null : <Row className="breadcrumb">
           <Col span="4" className="breadcrumb-title">
             首页
           </Col>
@@ -24,6 +32,7 @@ export default class Header extends Component {
             <span className="weather-detail">{this.state.weather}</span>
           </Col>
         </Row>
+        }
       </div>
     )
   }

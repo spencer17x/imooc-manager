@@ -19,6 +19,8 @@ import Home from './pages/home';
 import HighTable from './pages/table/highTable';
 import City from './pages/city/city';
 import Order from './pages/order/order';
+import Common from './Common';
+import OrderDetail from './pages/common/orderDetail';
 
 export default class IRouter extends Component {
   render () {
@@ -49,6 +51,11 @@ export default class IRouter extends Component {
                 </Switch>
               </Admin>
             }/>
+            <Route path="/common" render={({match}) => 
+              <Common>
+                <Route path={`${match.url}/order/detail`} component={OrderDetail}/>
+              </Common>
+            }/>            
             <Redirect to="/admin/home"/>
           </Switch>
         </App>
