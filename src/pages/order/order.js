@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import './order.less'
 import axios from '../../axios'
-import { Card, Select, Form, DatePicker, Button, Table, Modal } from 'antd'
+import Utils from '../../utils/utils';
+import { Card, Select, Form, DatePicker, Button, Table, Modal, message } from 'antd'
 
 export default class Order extends Component {
   render() {
@@ -94,7 +95,9 @@ Order = Form.create()(Order)
 class FilterForm extends Component {
   state = {
     dataSource: [],
-    selectedRowKeys: []
+    selectedRowKeys: [],
+    rowSelectedItem: '',
+    isVisible: false
   }
   render () {
     const columns = [{
@@ -160,7 +163,7 @@ class FilterForm extends Component {
     return <div className="card-top" style={{background: '#fff'}}>
       <div style={{padding: '20px'}}>
         <Button type="primary" onClick={this.handleOrderClick}>订单详情</Button>
-        <Button type="primary" style={{marginLeft: 20}}>结束订单</Button>
+        <Button type="primary" style={{marginLeft: 20}} onClick={this.closeOrder}>结束订单</Button>
       </div>
       <Table
         bordered
@@ -175,6 +178,20 @@ class FilterForm extends Component {
           }
         }}
       ></Table>
+      <Modal 
+        title="结束订单"
+        onOk={this.closeOrderMadal}
+        visible={this.state.isVisible}
+        onCancel={() => {
+          this.setState({
+            isVisible: false
+          })
+        }}>
+        <p className="close-order-text"><span className="modal-text">车辆编号：</span>800116116</p>  
+        <p className="close-order-text"><span className="modal-text">剩余电量：</span>100%</p>  
+        <p className="close-order-text"><span className="modal-text">行程开始时间：</span>1992-05-11 06:52:30</p>  
+        <p className="close-order-text"><span className="modal-text">当前位置：</span>北京市海淀区奥林匹克公园</p>  
+      </Modal>
     </div>
   }
   componentDidMount () {
@@ -219,6 +236,32 @@ class FilterForm extends Component {
     } else {
       window.open(window.origin + '/#/common/order/detail/' + selectedRowKeys[0])
     }
+  }
+  closeOrder = () => {
+    let  { rowSelectedItem } = this.state;
+    if (!rowSelectedItem) {
+      Modal.info({
+        title: '温馨提示',
+        content: '请选择行程中的订单',
+        okText: '关闭'
+      })
+    } else if (rowSelectedItem.state === 1) {
+      this.setState({
+        isVisible: true
+      })
+    } else if (rowSelectedItem.state === 2) {
+      Modal.info({
+        title: '温馨提示',
+        content: '该订单行程已结束',
+        okText: '关闭'
+      })
+    }
+  }
+  closeOrderMadal = () => {
+    this.requestList();
+    this.setState({
+      isVisible: false
+    })
   }
 }
 FilterForm = Form.create()(FilterForm)

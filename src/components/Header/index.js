@@ -3,6 +3,7 @@ import { Row, Col } from 'antd';
 import axios from '../../axios';
 import Utils from '../../utils/utils';
 import './style.less';
+import { Link } from 'react-router-dom';
 
 export default class Header extends Component {
   render () {
@@ -12,10 +13,10 @@ export default class Header extends Component {
         <Row className="header-top">
           <Col span="24">
             {
-              isOrderDetail ?  <div className="order-detail-wrap">
+              isOrderDetail ?  <Link className="order-detail-wrap" to="/">
               <img src="/assets/logo-ant.svg" alt="" className="order-detail-logo"/>
               <div>React.JS通用管理系统</div>
-            </div> : null
+            </Link> : null
             }
             <span style={{color: isOrderDetail ? '#fff' : ''}}>欢迎，{this.state.userName}</span>
             <a href="http://localhost:3000/">退出</a>
