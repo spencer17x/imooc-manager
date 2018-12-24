@@ -170,6 +170,7 @@ class FilterForm extends Component {
         dataSource={this.state.dataSource}
         columns={columns}
         rowSelection={rowSelection}
+        pagination={this.state.pagination}
         onRow={(record, index) => {
           return {
             onClick: () => {
@@ -214,7 +215,8 @@ class FilterForm extends Component {
             item.key = index
           })
           this.setState({
-            dataSource
+            dataSource,
+            pagination: Utils.pagination(res, this.changePage)
           })
         }
       })
@@ -262,6 +264,9 @@ class FilterForm extends Component {
     this.setState({
       isVisible: false
     })
+  }
+  changePage = () => {
+    console.log('change page')
   }
 }
 FilterForm = Form.create()(FilterForm)
