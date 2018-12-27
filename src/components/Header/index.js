@@ -41,13 +41,13 @@ export default class Header extends Component {
     this.setState({
       userName: 'Sev'
     });
-    this.getWeatherData();
+    // this.getWeatherData();
     this.getCurrentTime();
   }
   getWeatherData = () => {
     let city = '杭州';
     axios.jsonP({
-      url: `http://api.map.baidu.com/telematics/v3/weather?location=${encodeURIComponent(city)}&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`
+      url: `http://api.map.baidu.com/telematics/v3/weather?location=${encodeURIComponent(city)}&output=json&ak=GizvIAityXvXfH4DqPZpM63dcnTBWWrS`
     }).then((res) => {
       if (res.status === 'success') {
         const weatherData = res.results[0].weather_data;

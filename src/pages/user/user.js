@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Card, Input, Button, Form, Table } from 'antd';
+import { Card, Input, Button, Form, Table, Modal, Radio, TimePicker } from 'antd';
 import './user.less';
 import axios from '../../axios';
+import Utils from '../../utils/utils';
+import TextArea from 'antd/lib/input/TextArea';
 
 class User extends Component {
   state = {
-    dataSource: []
+    dataSource: [],
+    selectedRowKeys: [],
+    isPlusVisible: false
   }
   params = {
     page: 1
@@ -53,6 +57,18 @@ class User extends Component {
         dataIndex: 'rise_time'
       }
     ];
+    const rowSelection = {
+      type: 'radio',
+      selectedRowKeys: this.state.selectedRowKeys
+    }
+    const fromItemCol = {
+      labelCol: {
+        span: 4
+      },
+      wrapperCol: {
+        span: 20
+      }
+    }
     return (
       <div>
         <Card>
@@ -69,18 +85,18 @@ class User extends Component {
           </Form>
         </Card>
         <div className="user card-top">
-          <Form layout="inline">
+          <Form layout="inline" style={{marginLeft: 20, paddingTop: 20}}>
             <Form.Item>
-              <Button type="primary">创建员工</Button>
+              <Button type="primary" icon="plus" onClick={this.handlePlus}>创建员工</Button>
             </Form.Item>
             <Form.Item>
-              <Button>编辑员工</Button>
+              <Button icon="edit">编辑员工</Button>
             </Form.Item>
             <Form.Item>
               <Button>员工详情</Button>
             </Form.Item>
             <Form.Item>
-              <Button>删除员工</Button>
+              <Button icon="delete" type="danger">删除员工</Button>
             </Form.Item>
           </Form>
           <Table 
@@ -88,7 +104,52 @@ class User extends Component {
             dataSource={this.state.dataSource}
             bordered
             columns={columns}
+            pagination={this.state.pagination}
+            rowSelection={rowSelection}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  this.selectRow(record)
+                }
+              }
+            }}
           />
+          <Modal 
+            title="创建员工"
+            visible={this.state.isPlusVisible}
+            onCancel={() => {
+              this.setState({
+                isPlusVisible: false
+              })
+            }}
+            onOk={() => {
+              this.setState({
+                isPlusVisible: false
+              })
+              this.request();
+            }}  
+          >
+            <Form layout="horizontal">
+              <Form.Item {...fromItemCol} label="姓名">
+                <Input placeholder="请输入姓名"/>
+              </Form.Item>
+              <Form.Item {...fromItemCol} label="性别">
+                <Radio.Group value={2}>
+                  <Radio value={1}>男</Radio>
+                  <Radio value={2}>女</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item {...fromItemCol} label="状态">
+                <Input />
+              </Form.Item>
+              <Form.Item {...fromItemCol} label="生日">
+                <TimePicker />
+              </Form.Item>
+              <Form.Item {...fromItemCol} label="联系地址">
+                <TextArea placeholder="请输入联系地址"/>
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
       </div>
     )
@@ -100,7 +161,8 @@ class User extends Component {
     let options = {
       url: '/mock/user',
       data: {
-        params: this.params.page
+        params: this.params.page,
+        isShowLoading: true
       }
     }
     axios.ajax(options)
@@ -111,10 +173,24 @@ class User extends Component {
             item.key = index;
           });
           this.setState({
-            dataSource
+            dataSource,
+            pagination: Utils.pagination(res, this.changePage)
           });
         }
       })
+  }
+  changePage = () => {
+    this.request()
+  }
+  selectRow = (record) => {
+    this.setState({
+      selectedRowKeys: [record.key]
+    })
+  }
+  handlePlus = () => {
+    this.setState({
+      isPlusVisible: true
+    })
   }
 }
 export default User;

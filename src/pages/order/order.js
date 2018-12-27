@@ -267,6 +267,7 @@ class FilterForm extends Component {
   }
   changePage = () => {
     console.log('change page')
+    this.requestList()
   }
 }
 FilterForm = Form.create()(FilterForm)
