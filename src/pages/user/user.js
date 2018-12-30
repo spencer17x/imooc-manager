@@ -11,11 +11,11 @@ class User extends Component {
     dataSource: [],
     selectedRowKeys: [],
     isVisible: false,
-    selectRows: []
+    selectRows: [],
+    editor_title: '创建员工'
   }
   params = {
-    page: 1,
-    editor_title: '创建员工'
+    page: 1
   }
   render() {
     const columns = [
@@ -126,7 +126,7 @@ class User extends Component {
     let options = {
       url: '/mock/user',
       data: {
-        params: this.params.page,
+        params: this.params,
         isShowLoading: true
       }
     }
@@ -159,7 +159,7 @@ class User extends Component {
       Modal.info({
         title: '信息',
         content: '请选择一个用户'
-      })
+      });
     } else {
       if (info === '创建员工') {
         this.setState({
@@ -176,6 +176,10 @@ class User extends Component {
   btnEvent = (info) => {
     if (info === 'ok') {
       this.request();
+      this.setState({
+        selectRows: [],
+        selectedRowKeys: []
+      })
     }
     this.setState({
       isVisible: false
