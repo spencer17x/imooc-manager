@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { Card, Input, Button, Form, Table, Modal, Radio, TimePicker } from 'antd';
+import { Card, Input, Button, Form, Table, Modal, Radio, TimePicker, DatePicker } from 'antd';
 import './user.less';
 import axios from '../../axios';
 import Utils from '../../utils/utils';
 import TextArea from 'antd/lib/input/TextArea';
+import  moment from 'moment';
 
 class User extends Component {
   state = {
     dataSource: [],
     selectedRowKeys: [],
-    isPlusVisible: false
+    isVisible: false,
+    selectRows: []
   }
   params = {
-    page: 1
+    page: 1,
+    editor_title: '创建员工'
   }
   render() {
     const columns = [
@@ -61,14 +64,6 @@ class User extends Component {
       type: 'radio',
       selectedRowKeys: this.state.selectedRowKeys
     }
-    const fromItemCol = {
-      labelCol: {
-        span: 4
-      },
-      wrapperCol: {
-        span: 20
-      }
-    }
     return (
       <div>
         <Card>
@@ -87,16 +82,16 @@ class User extends Component {
         <div className="user card-top">
           <Form layout="inline" style={{marginLeft: 20, paddingTop: 20}}>
             <Form.Item>
-              <Button type="primary" icon="plus" onClick={this.handlePlus}>创建员工</Button>
+              <Button type="primary" icon="plus" onClick={() => this.handleBtn('创建员工')}>创建员工</Button>
             </Form.Item>
             <Form.Item>
-              <Button icon="edit">编辑员工</Button>
+              <Button icon="edit" onClick={() => this.handleBtn('编辑员工')}>编辑员工</Button>
             </Form.Item>
             <Form.Item>
-              <Button>员工详情</Button>
+              <Button onClick={() => this.handleBtn('员工详情')}>员工详情</Button>
             </Form.Item>
             <Form.Item>
-              <Button icon="delete" type="danger">删除员工</Button>
+              <Button icon="delete" type="danger" onClick={() => this.handleBtn('删除员工')}>删除员工</Button>
             </Form.Item>
           </Form>
           <Table 
@@ -114,42 +109,12 @@ class User extends Component {
               }
             }}
           />
-          <Modal 
-            title="创建员工"
-            visible={this.state.isPlusVisible}
-            onCancel={() => {
-              this.setState({
-                isPlusVisible: false
-              })
-            }}
-            onOk={() => {
-              this.setState({
-                isPlusVisible: false
-              })
-              this.request();
-            }}  
-          >
-            <Form layout="horizontal">
-              <Form.Item {...fromItemCol} label="姓名">
-                <Input placeholder="请输入姓名"/>
-              </Form.Item>
-              <Form.Item {...fromItemCol} label="性别">
-                <Radio.Group value={2}>
-                  <Radio value={1}>男</Radio>
-                  <Radio value={2}>女</Radio>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item {...fromItemCol} label="状态">
-                <Input />
-              </Form.Item>
-              <Form.Item {...fromItemCol} label="生日">
-                <TimePicker />
-              </Form.Item>
-              <Form.Item {...fromItemCol} label="联系地址">
-                <TextArea placeholder="请输入联系地址"/>
-              </Form.Item>
-            </Form>
-          </Modal>
+          <EditorUser 
+            btnEvent={this.btnEvent}
+            isVisible={this.state.isVisible}
+            selectRows={this.state.selectRows}
+            title={this.state.editor_title}
+            />
         </div>
       </div>
     )
@@ -184,13 +149,108 @@ class User extends Component {
   }
   selectRow = (record) => {
     this.setState({
-      selectedRowKeys: [record.key]
-    })
+      selectedRowKeys: [record.key],
+      selectRows: record
+    });
   }
-  handlePlus = () => {
+  handleBtn = (info) => {
+    let infoArr = ['编辑员工', '员工详情', '删除员工']
+    if (infoArr.includes(info) && !this.state.selectRows.user_name) {
+      Modal.info({
+        title: '信息',
+        content: '请选择一个用户'
+      })
+    } else {
+      if (info === '创建员工') {
+        this.setState({
+          selectRows: [],
+          selectedRowKeys: []
+        })
+      }
+      this.setState({
+        isVisible: true,
+        editor_title: info
+      });
+    }
+  }
+  btnEvent = (info) => {
+    if (info === 'ok') {
+      this.request();
+    }
     this.setState({
-      isPlusVisible: true
+      isVisible: false
     })
   }
 }
 export default User;
+
+class EditorUser extends Component {
+  render () {
+    const fromItemCol = {
+      labelCol: {
+        span: 4
+      },
+      wrapperCol: {
+        span: 20
+      }
+    }
+    const { getFieldDecorator } = this.props.form
+    const { selectRows } = this.props;
+    return (
+      <Modal 
+        title={this.props.title}
+        visible={this.props.isVisible}
+        onCancel={() => this.props.btnEvent('cancel')}
+        onOk={() => this.props.btnEvent('ok')}  
+      >
+        <Form layout="horizontal">
+          <Form.Item {...fromItemCol} label="姓名">
+            {
+              getFieldDecorator('editor_name', {
+                initialValue: selectRows.user_name 
+              })(<Input placeholder="请输入姓名"/>)
+            }
+          </Form.Item>
+          <Form.Item {...fromItemCol} label="性别">
+            {
+              getFieldDecorator('editor_sex', {
+                initialValue: selectRows.sex 
+              })(
+                <Radio.Group>
+                  <Radio value={1}>男</Radio>
+                  <Radio value={2}>女</Radio>
+                </Radio.Group>
+              )
+            }
+          </Form.Item>
+          <Form.Item {...fromItemCol} label="状态">
+            {
+              getFieldDecorator('editor_state', {
+                initialValue: selectRows.state 
+              })(<Input />)
+            }
+          </Form.Item>
+          <Form.Item {...fromItemCol} label="生日">
+            {
+              getFieldDecorator('editor_bidthday', {
+                initialValue: moment(new Date())
+              })(<DatePicker />)
+            }
+          </Form.Item>
+          <Form.Item {...fromItemCol} label="联系地址">
+            {
+              getFieldDecorator('editor_address', {
+                initialValue: selectRows.address 
+              })(<TextArea placeholder="请输入联系地址"/>)
+            }
+          </Form.Item>
+        </Form>
+      </Modal>
+    )
+  }
+  componentDidUpdate () {
+    console.log(this.props.selectRows);
+  }
+}
+
+EditorUser = Form.create()(EditorUser);

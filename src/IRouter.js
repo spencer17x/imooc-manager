@@ -22,6 +22,7 @@ import Order from './pages/order/order';
 import Common from './Common';
 import OrderDetail from './pages/common/orderDetail';
 import User from './pages/user/user';
+import Rich from './pages/rich/rich';
 
 export default class IRouter extends Component {
   render () {
@@ -50,6 +51,7 @@ export default class IRouter extends Component {
                   <Route path="/admin/order" component={Order}/>
                   <Route path="/admin/order" component={Order}/>
                   <Route path="/admin/user" component={User}/>
+                  <Route path="/admin/rich" component={Rich}/>
                   <Route component={NoMatch}/>
                 </Switch>
               </Admin>
