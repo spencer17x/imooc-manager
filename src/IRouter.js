@@ -25,6 +25,9 @@ import User from './pages/user/user';
 import Rich from './pages/rich/rich';
 import BikeMap from './pages/bikeMap/bikeMap';
 import Bar from './pages/echarts/bar';
+import Pie from './pages/echarts/pie';
+import Line from './pages/echarts/line';
+import Permission from './pages/permission/permission';
 
 export default class IRouter extends Component {
   render () {
@@ -56,6 +59,9 @@ export default class IRouter extends Component {
                   <Route path="/admin/rich" component={Rich}/>
                   <Route path="/admin/bikeMap" component={BikeMap}/>
                   <Route path="/admin/charts/bar" component={Bar}/>
+                  <Route path="/admin/charts/pie" component={Pie}/>
+                  <Route path="/admin/charts/line" component={Line}/>
+                  <Route path="/admin/permission" component={Permission}/>
                   <Route component={NoMatch}/>
                 </Switch>
               </Admin>
