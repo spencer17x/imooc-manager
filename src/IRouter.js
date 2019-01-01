@@ -71,7 +71,8 @@ export default class IRouter extends Component {
                 <Route path={`${match.url}/order/detail`} component={OrderDetail}/>
               </Common>
             }/>            
-            <Redirect to="/admin/home"/>
+            {/* <Redirect to="/admin/home"/> */}
+            <Redirect to="/login"/>
           </Switch>
         </App>
       </HashRouter>
