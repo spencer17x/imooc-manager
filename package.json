@@ -1,6 +1,7 @@
 {
   "name": "imooc-manager",
   "version": "0.1.0",
+  "homepage": "https://xuzpeng.githu.io/imooc-manager",
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.0",
@@ -75,8 +76,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "predeploy": "npm run build",
-	  "deploy": "gh-pages -d build"
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -132,5 +133,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
   }
 }
