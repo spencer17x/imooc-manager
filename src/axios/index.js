@@ -32,10 +32,7 @@ export default class Axios {
         params: (options.data && options.data.params) || '',
         timeout: 3000
       }).then(response => {
-        if (options.data && options.data.isShowLoading) {
-          loading = document.querySelector('#ajaxLoading');
-          loading.style.display = 'none';
-        }
+        loading.style.display = 'none';
         if (response.status === 200) {
           let res = response.data;
           if (res.code === 20000) {
