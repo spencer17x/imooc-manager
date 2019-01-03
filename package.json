@@ -132,9 +132,5 @@
     "presets": [
       "react-app"
     ]
-  },
-  "homepage": "http://xuzpeng.github.io/imooc-manager/dist",
-  "devDependencies": {
-    "gh-pages": "^2.0.1"
   }
 }
