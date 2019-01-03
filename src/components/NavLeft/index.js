@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Menu } from 'antd';
 import menuList from '../../config/menuConfig';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import './style.less';
+import { connect } from 'react-redux';
+import { handleChangeTitle } from '../../redux/actionCreators';
 
 const SubMenu = Menu.SubMenu;
 
-export default class NavLeft extends Component {
+class NavLeft extends Component {
   render () {
     return (
       <div className="nav-left-wrap">
@@ -37,9 +39,29 @@ export default class NavLeft extends Component {
       }
       return (
         <Menu.Item key={item.key}>
-          <Link to={item.key}>{item.title}</Link>
+          <div onClick={() => this.changeRoute(item)}>{item.title}</div>
         </Menu.Item>
       )
     })
   }
+  changeRoute = (route) => {
+    window.location.href = `/#${route.key}`;
+    this.props.changeTitle(route.title);
+  }
 }
+
+const mapState = () => {
+  return {
+    
+  }
+}
+
+const mapDispatchState = (dispatch) => {
+  return {
+    changeTitle (title) {
+      dispatch(handleChangeTitle(title))
+    }
+  }
+}
+
+export default connect(mapState, mapDispatchState)(NavLeft);

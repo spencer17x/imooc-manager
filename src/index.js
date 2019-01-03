@@ -7,8 +7,13 @@ import './index.css';
 import IRouter from './IRouter';
 // import IRouter from './pages/route_demo/route2/router';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux'
 
-ReactDOM.render(<IRouter />, document.getElementById('root'));
+import store from './redux/store';
+
+ReactDOM.render(<Provider store={store}>
+  <IRouter />
+</Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

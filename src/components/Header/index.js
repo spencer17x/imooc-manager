@@ -4,8 +4,9 @@ import axios from '../../axios';
 import Utils from '../../utils/utils';
 import './style.less';
 import { Link } from 'react-router-dom';
-
-export default class Header extends Component {
+import { connect } from 'react-redux';
+ 
+class Header extends Component {
   render () {
     const isOrderDetail = this.props.part === 'orderDetail';
     return (
@@ -19,13 +20,13 @@ export default class Header extends Component {
             </Link> : null
             }
             <span style={{color: isOrderDetail ? '#fff' : ''}}>欢迎，{this.state.userName}</span>
-            <a href="http://localhost:3000/">退出</a>
+            <a href="/">退出</a>
           </Col>
         </Row>
         {
           isOrderDetail ? null : <Row className="breadcrumb">
           <Col span="4" className="breadcrumb-title">
-            首页
+            {this.props.title}
           </Col>
           <Col span="20" className="weather">
             <span className="date">{this.state.currentTime}</span>
@@ -41,7 +42,7 @@ export default class Header extends Component {
     this.setState({
       userName: 'Sev'
     });
-    // this.getWeatherData();
+    this.getWeatherData();
     this.getCurrentTime();
   }
   getWeatherData = () => {
@@ -70,3 +71,11 @@ export default class Header extends Component {
     }, 1000);
   }
 }
+
+const mapState = (state) => {
+  return {
+    title: state.title
+  }
+}
+
+export default connect(mapState)(Header)

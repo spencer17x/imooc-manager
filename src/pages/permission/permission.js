@@ -1,7 +1,17 @@
 import React, { Component } from 'react'
-import { Button, Table, Modal, Form, Input, Select } from 'antd'
+import { 
+  Button, 
+  Table, 
+  Modal, 
+  Form, 
+  Input, 
+  Select, 
+  Transfer,
+  Tree 
+} from 'antd'
 import axios from '../../axios'
 import Utils from '../../utils/utils'
+import menuConfig from '../../config/menuConfig'
 
 export default class Permission extends Component {
   params = {
@@ -86,6 +96,7 @@ export default class Permission extends Component {
           handleCancel={this.handleCancel}
           request={this.request}
         />
+        <PermissionSetting />
       </div>
     )
   }
@@ -127,6 +138,38 @@ export default class Permission extends Component {
     this.setState({
       createVisible: false
     })
+  }
+}
+
+// 权限设置
+class PermissionSetting extends Component {
+  render () {
+    const formCol = {
+      labelCol: {
+        span: 4
+      },
+      wrapperCol: {
+        span: 20
+      }
+    }
+    return (
+      <Modal 
+        title="权限设置"
+        visible={false}
+      >
+        <Form>
+          <Form.Item label="角色名称" {...formCol}>
+            <Input value="管理人员" disabled/>
+          </Form.Item>
+          <Form.Item label="状态" {...formCol}>
+            <Select value={1} style={{width: 100}}>
+              <Select.Option value={1}>启动</Select.Option>
+              <Select.Option value={2}>停用</Select.Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+    )
   }
 }
 
