@@ -74,7 +74,7 @@ export default class Permission extends Component {
             })
           }}>创建角色</Button>
           <Button style={{marginLeft: 10}} type="primary" onClick={this.setPermission}>设置权限</Button>
-          <Button style={{marginLeft: 10}} type="primary">用户授权</Button>
+          <Button style={{marginLeft: 10}} type="primary" onClick={this.clickShowAuth}>用户授权</Button>
         </div>
         <Table 
           bordered
@@ -108,6 +108,8 @@ export default class Permission extends Component {
         <UserAuth 
           isAuthShow={this.state.isAuthShow}
           selectedRows={this.state.selectedRows}
+          handleCancel={this.handleCancel}
+          request={this.request}
         />
       </div>
     )
@@ -137,6 +139,18 @@ export default class Permission extends Component {
       }
     })
   }
+  clickShowAuth = () => {
+    if (!this.state.selectedRows) {
+      Modal.info({
+        title: '信息',
+        content: '请选择一个角色'
+      })
+    } else {
+      this.setState({
+        isAuthShow: true
+      })
+    }
+  }
   changePage = () => {
     console.log('change Page');
     this.request();
@@ -150,7 +164,8 @@ export default class Permission extends Component {
   handleCancel = () => {
     this.setState({
       createVisible: false,
-      permissionSettingShow: false
+      permissionSettingShow: false,
+      isAuthShow: false
     })
   }
   setPermission = () => {
@@ -170,7 +185,9 @@ export default class Permission extends Component {
 // 用户授权
 class UserAuth extends Component {
   state = {
-    roleName: ['管理人员', '市场专员', '人力专员', '财务专员']
+    roleName: ['管理人员', '市场专员', '人力专员', '财务专员'],
+    dataSource: [],
+    targetKeys: []
   }
   render () {
     const formCol = {
@@ -182,17 +199,70 @@ class UserAuth extends Component {
       }
     }
     return (
-      <Modal title="用户授权" visible={true} width={800}>
+      <Modal 
+        title="用户授权" 
+        visible={this.props.isAuthShow} 
+        width={800}
+        onOk={() => {
+          this.props.request()
+          this.props.handleCancel()
+        }}
+        onCancel={this.props.handleCancel}
+      >
         <Form>
           <Form.Item label="角色名称" {...formCol}>
             <Input value={this.state.roleName[this.props.selectedRows.role_name - 1]} disabled/>
           </Form.Item>
           <Form.Item label="选择用户" {...formCol}>
-            
+            <Transfer 
+              titles={['已选用户', '未选用户']}
+              dataSource={this.state.dataSource}
+              render={item => item.user_name} 
+              showSearch 
+              operations={['to right', 'to left']}
+              targetKeys={this.state.targetKeys}
+              onChange={this.changeUser}
+              locale={{searchPlaceholder: '请输入用户名'}}
+              listStyle={{height: 380}}
+            />
           </Form.Item>
         </Form>
       </Modal>
     )
+  }
+  componentDidMount () {
+    this.request()
+  }
+  request = () => {
+    axios.ajax({
+      url: '/mock/auth',
+      data: {
+        isShowLoading: true
+      }
+    }).then(res => {
+      if (res.code === 20000) {
+        const dataSource = res.result.users
+        const selectedUserIndex = [1,2,3,4,5,6,7,8]
+        let targetKeys = []
+        dataSource.map((item, index) => {
+          item.key = index
+        })
+        dataSource.forEach(item => {
+          if (selectedUserIndex.includes(item.key)) {
+            targetKeys.push(item.key)
+          }
+        })
+        this.setState({
+          dataSource,
+          targetKeys
+        })
+      }
+    })
+  }
+  changeUser = (targetKeys) => {
+    this.setState({
+      targetKeys
+    })
   }
 }
 
