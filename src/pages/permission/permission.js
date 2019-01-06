@@ -21,7 +21,10 @@ export default class Permission extends Component {
     dataSource: [],
     pagination: '',
     selectedRowKeys: [],
-    createVisible: false
+    createVisible: false,
+    permissionSettingShow: false,
+    selectedRows: '',
+    isAuthShow: false
   }
   render() {
     const columns = [{
@@ -70,7 +73,7 @@ export default class Permission extends Component {
               createVisible: true
             })
           }}>创建角色</Button>
-          <Button style={{marginLeft: 10}} type="primary">设置权限</Button>
+          <Button style={{marginLeft: 10}} type="primary" onClick={this.setPermission}>设置权限</Button>
           <Button style={{marginLeft: 10}} type="primary">用户授权</Button>
         </div>
         <Table 
@@ -96,7 +99,16 @@ export default class Permission extends Component {
           handleCancel={this.handleCancel}
           request={this.request}
         />
-        <PermissionSetting />
+        <PermissionSetting 
+          permissionSettingShow={this.state.permissionSettingShow}
+          permissonRow={this.state.selectedRows}
+          handleCancel={this.handleCancel}
+          request={this.request}
+        />
+        <UserAuth 
+          isAuthShow={this.state.isAuthShow}
+          selectedRows={this.state.selectedRows}
+        />
       </div>
     )
   }
@@ -131,18 +143,66 @@ export default class Permission extends Component {
   }
   selectedRows = (record) => {
     this.setState({
-      selectedRowKeys: [record.key]
+      selectedRowKeys: [record.key],
+      selectedRows: record
     })
   }
   handleCancel = () => {
     this.setState({
-      createVisible: false
+      createVisible: false,
+      permissionSettingShow: false
     })
+  }
+  setPermission = () => {
+    if (!this.state.selectedRows) {
+      Modal.info({
+        title: '信息',
+        content: '请选择一个角色'
+      })
+    } else {
+      this.setState({
+        permissionSettingShow: true
+      })
+    }
+  }
+}
+
+// 用户授权
+class UserAuth extends Component {
+  state = {
+    roleName: ['管理人员', '市场专员', '人力专员', '财务专员']
+  }
+  render () {
+    const formCol = {
+      labelCol: {
+        span: 4
+      },
+      wrapperCol: {
+        span: 18
+      }
+    }
+    return (
+      <Modal title="用户授权" visible={true} width={800}>
+        <Form>
+          <Form.Item label="角色名称" {...formCol}>
+            <Input value={this.state.roleName[this.props.selectedRows.role_name - 1]} disabled/>
+          </Form.Item>
+          <Form.Item label="选择用户" {...formCol}>
+            
+          </Form.Item>
+        </Form>
+      </Modal>
+    )
   }
 }
 
 // 权限设置
 class PermissionSetting extends Component {
+  state = {
+    checkboxTree: '',
+    checkedKeys: ['/admin/home', '/admin/ui'],
+    roleName: ['管理人员', '市场专员', '人力专员', '财务专员']
+  }
   render () {
     const formCol = {
       labelCol: {
@@ -155,21 +215,57 @@ class PermissionSetting extends Component {
     return (
       <Modal 
         title="权限设置"
-        visible={false}
+        visible={this.props.permissionSettingShow}
+        onCancel={this.props.handleCancel}
+        onOk={() => {
+          this.props.request()
+          this.props.handleCancel()
+        }}
       >
         <Form>
           <Form.Item label="角色名称" {...formCol}>
-            <Input value="管理人员" disabled/>
+            <Input value={this.state.roleName[this.props.permissonRow.role_name - 1]} disabled/>
           </Form.Item>
           <Form.Item label="状态" {...formCol}>
-            <Select value={1} style={{width: 100}}>
+            <Select value={this.props.permissonRow.use_state} style={{width: 100}}>
               <Select.Option value={1}>启动</Select.Option>
               <Select.Option value={2}>停用</Select.Option>
             </Select>
           </Form.Item>
         </Form>
+        <Tree 
+          defaultExpandAll 
+          checkable 
+          checkedKeys={this.state.checkedKeys}
+          onSelect={this.selectTreeNode}
+          onCheck={this.selectTreeNode}>
+          <Tree.TreeNode title="平台权限" key="平台权限">
+            {this.state.checkboxTree}
+          </Tree.TreeNode>
+        </Tree>
       </Modal>
     )
+  }
+  componentDidMount () {
+    const checkboxTree = this.renderTree(menuConfig)
+    this.setState({
+      checkboxTree
+    })
+  }
+  renderTree = (data) => {
+    return data.map(item => {
+      if (item.children) {
+        return <Tree.TreeNode title={item.title} key={item.key}>
+          {this.renderTree(item.children)}
+        </Tree.TreeNode>
+      }
+      return <Tree.TreeNode title={item.title} key={item.key}/>
+    })
+  }
+  selectTreeNode = (checkedKeys) => {
+    this.setState({
+      checkedKeys
+    })
   }
 }
 

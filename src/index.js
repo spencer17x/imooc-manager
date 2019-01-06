@@ -7,7 +7,7 @@ import './index.css';
 import IRouter from './IRouter';
 // import IRouter from './pages/route_demo/route2/router';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 
 import store from './redux/store';
 

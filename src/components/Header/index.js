@@ -42,7 +42,7 @@ class Header extends Component {
     this.setState({
       userName: 'Sev'
     });
-    this.getWeatherData();
+    // this.getWeatherData();
     this.getCurrentTime();
   }
   getWeatherData = () => {
