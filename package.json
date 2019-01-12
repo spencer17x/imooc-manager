@@ -1,7 +1,7 @@
 {
   "name": "imooc-manager",
   "version": "0.1.0",
-  "homepage": "https://xuzpeng.githu.io/imooc-manager",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.0",
@@ -60,6 +60,7 @@
     "react-dom": "^16.6.3",
     "react-draft-wysiwyg": "^1.12.18",
     "react-hot-loader": "^4.6.3",
+    "react-loadable": "^5.5.0",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
@@ -69,6 +70,7 @@
     "terser-webpack-plugin": "1.1.0",
     "url-loader": "1.1.1",
     "webpack": "4.19.1",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"

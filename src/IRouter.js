@@ -1,33 +1,136 @@
 import React, { Component } from 'react';
 import App from './App';
 import Admin from './admin';
-import Buttons from './pages/ui/buttons';
-import Loadings from './pages/ui/loadings';
-import Notice from './pages/ui/notice';
-import Messages from './pages/ui/messages';
-import Tabs from './pages/ui/tabs';
-import Gallery from './pages/ui/gallery';
-import Carousels from './pages/ui/carousel';
-import FormLogin from './pages/form/login';
-import FormRegister from './pages/form/register';
-import BasicTable from './pages/table/basicTable';
-import Login from './pages/login';
-import NoMatch from './pages/noMatch';
+// import Buttons from './pages/ui/buttons';
+// import Loadings from './pages/ui/loadings';
+// import Notice from './pages/ui/notice';
+// import Messages from './pages/ui/messages';
+// import Tabs from './pages/ui/tabs';
+// import Gallery from './pages/ui/gallery';
+// import Carousels from './pages/ui/carousel';
+// import FormLogin from './pages/form/login';
+// import FormRegister from './pages/form/register';
+// import BasicTable from './pages/table/basicTable';
+// import Login from './pages/login';
+// import NoMatch from './pages/noMatch';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Modals from './pages/ui/modals';
-import Home from './pages/home';
-import HighTable from './pages/table/highTable';
-import City from './pages/city/city';
-import Order from './pages/order/order';
+// import Modals from './pages/ui/modals';
+// import Home from './pages/home';
+// import HighTable from './pages/table/highTable';
+// import City from './pages/city/city';
+// import Order from './pages/order/order';
 import Common from './Common';
-import OrderDetail from './pages/common/orderDetail';
-import User from './pages/user/user';
-import Rich from './pages/rich/rich';
-import BikeMap from './pages/bikeMap/bikeMap';
-import Bar from './pages/echarts/bar';
-import Pie from './pages/echarts/pie';
-import Line from './pages/echarts/line';
-import Permission from './pages/permission/permission';
+// import OrderDetail from './pages/common/orderDetail';
+// import User from './pages/user/user';
+// import Rich from './pages/rich/rich';
+// import BikeMap from './pages/bikeMap/bikeMap';
+// import Bar from './pages/echarts/bar';
+// import Pie from './pages/echarts/pie';
+// import Line from './pages/echarts/line';
+// import Permission from './pages/permission/permission';
+import Loadable from 'react-loadable';
+import Loading from './LoadingC';
+
+let Home = Loadable({
+  loader: () => import('./pages/home'),
+  loading: Loading
+})
+let Login = Loadable({
+  loader: () => import('./pages/login'),
+  loading: Loading
+})
+let Buttons = Loadable({
+  loader: () => import('./pages/ui/buttons'),
+  loading: Loading
+})
+let Loadings = Loadable({
+  loader: () => import('./pages/ui/loadings'),
+  loading: Loading
+})
+let Notice = Loadable({
+  loader: () => import('./pages/ui/notice'),
+  loading: Loading
+})
+let Messages = Loadable({
+  loader: () => import('./pages/ui/messages'),
+  loading: Loading
+})
+let Tabs = Loadable({
+  loader: () => import('./pages/ui/tabs'),
+  loading: Loading
+})
+let Gallery = Loadable({
+  loader: () => import('./pages/ui/gallery'),
+  loading: Loading
+})
+let Carousels = Loadable({
+  loader: () => import('./pages/ui/carousel'),
+  loading: Loading
+})
+let FormLogin = Loadable({
+  loader: () => import('./pages/form/login'),
+  loading: Loading
+})
+let FormRegister = Loadable({
+  loader: () => import('./pages/form/register'),
+  loading: Loading
+})
+let BasicTable = Loadable({
+  loader: () => import('./pages/table/basicTable'),
+  loading: Loading
+})
+let NoMatch = Loadable({
+  loader: () => import('./pages/noMatch'),
+  loading: Loading
+})
+let Modals = Loadable({
+  loader: () => import('./pages/ui/modals'),
+  loading: Loading
+})
+let HighTable = Loadable({
+  loader: () => import('./pages/table/highTable'),
+  loading: Loading
+})
+let City = Loadable({
+  loader: () => import('./pages/city/city'),
+  loading: Loading
+})
+let Order = Loadable({
+  loader: () => import('./pages/order/order'),
+  loading: Loading
+})
+let OrderDetail = Loadable({
+  loader: () => import('./pages/common/orderDetail'),
+  loading: Loading
+})
+let User = Loadable({
+  loader: () => import('./pages/user/user'),
+  loading: Loading
+})
+let Rich = Loadable({
+  loader: () => import('./pages/rich/rich'),
+  loading: Loading
+})
+let BikeMap = Loadable({
+  loader: () => import('./pages/bikeMap/bikeMap'),
+  loading: Loading
+})
+let Bar = Loadable({
+  loader: () => import('./pages/echarts/bar'),
+  loading: Loading
+})
+let Pie = Loadable({
+  loader: () => import('./pages/echarts/pie'),
+  loading: Loading
+})
+let Line = Loadable({
+  loader: () => import('./pages/echarts/line'),
+  loading: Loading
+})
+let Permission = Loadable({
+  loader: () => import('./pages/permission/permission'),
+  loading: Loading
+})
 
 export default class IRouter extends Component {
   render () {
