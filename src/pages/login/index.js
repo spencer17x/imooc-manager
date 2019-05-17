@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './style.less'
 import { Input, Form, Button, Modal } from 'antd'
+import axios from '../../axios'
 
 export default class Login extends Component {
   render () {
@@ -19,7 +20,7 @@ export default class Login extends Component {
             <div className="login-form">
               <div className="title">React欢迎你</div>
               <Form>
-                <Form.Item style={{width: 300, margin: '0 auto 0',}}>
+                <Form.Item style={{width: 300, margin: '0 auto',}}>
                   {
                     getFieldDecorator('user_account', {
                       initialValue: 'admin'
@@ -48,7 +49,7 @@ export default class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (values.user_account === 'admin' && values.user_password === '123456') {
-          window.location.href = '/#/admin/home'
+          this.props.history.push('/admin/home');
         } else {
           Modal.error({
             title: '警告',

@@ -11,7 +11,7 @@ export default class Admin extends Component {
     return (
       <Row className="container">
         <Col span="4" className="nav-left">
-          <NavLeft/>
+          <NavLeft history={this.props.history}/>
         </Col>
         <Col span="20" className="main">
           <Header/>

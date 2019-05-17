@@ -21,6 +21,7 @@ const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -28,9 +29,9 @@ const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const publicPath = paths.servedPath;
 // Some apps do not use client-side routing with pushState.
 // For these, "homepage" can be set to "." to enable relative asset paths.
-const shouldUseRelativeAssetPaths = publicPath === './';
+const shouldUseRelativeAssetPaths = publicPath === '/';
 // Source maps are resource heavy and can cause out of memory issue for large source files.
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const shouldUseSourceMap = false;
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
@@ -420,38 +421,6 @@ module.exports = {
               'sass-loader'
             ),
           },
-          // {
-          //   test: lessRegex,
-          //   exclude: lessModuleRegex,
-          //   loader: getStyleLoaders(
-          //     {
-          //       importLoaders: 3,
-          //       sourceMap: shouldUseSourceMap,
-          //     },
-          //     'less-loader'
-          //   ),
-          //   // Don't consider CSS imports dead code even if the
-          //   // containing package claims to have no side effects.
-          //   // Remove this when webpack adds a warning or an error for this.
-          //   // See https://github.com/webpack/webpack/issues/6571
-          //   sideEffects: true,
-          // },
-          // // Adds support for CSS Modules, but using less
-          // // using the extension .module.scss or .module.less
-          // {
-          //   test: lessModuleRegex,
-          //   loader: getStyleLoaders(
-          //     {
-          //       importLoaders: 3,
-          //       sourceMap: shouldUseSourceMap,
-          //       modules: true,
-          //       getLocalIdent: getCSSModuleLocalIdent,
-          //     },
-          //     'less-loader'
-          //   ),
-          // },
-
-
           // 主题色
           {
             test: /\.less$/,
@@ -496,6 +465,18 @@ module.exports = {
     ],
   },
   plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'server',
+      analyzerHost: '127.0.0.1',
+      analyzerPort: 8889,
+      reportFilename: 'report.html',
+      defaultSizes: 'parsed',
+      openAnalyzer: true,
+      generateStatsFile: false,
+      statsFilename: 'stats.json',
+      statsOptions: null,
+      logLevel: 'info'
+    }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,

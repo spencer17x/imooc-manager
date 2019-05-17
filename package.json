@@ -4,7 +4,7 @@
   "homepage": ".",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.1.0",
+    "@babel/core": "^7.4.4",
     "@babel/plugin-syntax-jsx": "^7.0.0",
     "@svgr/webpack": "2.4.1",
     "antd": "^3.10.9",
@@ -42,12 +42,19 @@
     "jest-pnp-resolver": "1.0.1",
     "jest-resolve": "23.6.0",
     "jsonp": "^0.2.1",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-jwt": "^3.3.2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "less": "^2.7.3",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "0.4.3",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "moment": "^2.22.2",
+    "mysql": "^2.16.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -66,6 +73,8 @@
     "redux": "^4.0.1",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
+    "sequelize": "^3.28.0",
+    "sequelize-auto": "^0.4.29",
     "style-loader": "0.23.0",
     "terser-webpack-plugin": "1.1.0",
     "url-loader": "1.1.1",
@@ -80,7 +89,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "analyz": "NODE_ENV=production npm_config_report=true npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -138,6 +148,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/register": "^7.4.4",
+    "babel-register": "^6.26.0",
     "gh-pages": "^2.0.1"
   }
 }

@@ -32,7 +32,7 @@ class NavLeft extends Component {
     return data.map((item) => {
       if (item.children) {
         return (
-          <SubMenu title={item.title} key={item.key}>
+          <SubMenu title={<span><i className="iconfont"></i><span>{item.title}</span></span>} key={item.key}>
             {this.renderMenu(item.children)}
           </SubMenu>
         )
@@ -45,7 +45,7 @@ class NavLeft extends Component {
     })
   }
   changeRoute = (route) => {
-    window.location.href = `/#${route.key}`;
+    this.props.history.push(`${route.key}`);
     this.props.changeTitle(route.title);
   }
 }
