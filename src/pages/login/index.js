@@ -23,14 +23,14 @@ export default class Login extends Component {
                 <Form.Item style={{width: 300, margin: '0 auto',}}>
                   {
                     getFieldDecorator('user_account', {
-                      initialValue: 'admin'
+                      initialValue: 'sev'
                     })(<Input />)
                   }
                 </Form.Item>
                 <Form.Item style={{width: 300, margin: '20px auto 0'}}>
                   {
                     getFieldDecorator('user_password', {
-                      initialValue: '123456'
+                      initialValue: '123'
                     })(<Input type="password"/>)
                   }
                 </Form.Item>
@@ -46,16 +46,18 @@ export default class Login extends Component {
     )
   }
   loginSubmit = () => {
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        if (values.user_account === 'admin' && values.user_password === '123456') {
-          this.props.history.push('/admin/home');
-        } else {
-          Modal.error({
-            title: '警告',
-            content: '账号或密码错误，请重新输入'
-          })
-        }
+        const userInfo = await axios.ajax({
+          url: '/api/user',
+          isBaseApi: false,
+          method: 'POST',
+          data: {
+            name: values.user_account,
+            password: +values.user_password
+          }
+        });
+        userInfo.success && this.props.history.push('/admin/home');
       }
     })
   }

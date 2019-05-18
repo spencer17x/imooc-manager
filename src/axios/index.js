@@ -19,28 +19,30 @@ export default class Axios {
 
   static ajax(options) {
     const baseApi = 'https://easy-mock.com/mock/5c07d5c95a35be334b3a4f09/mockapi';
-    let loading;
+    const isBaseApi = options.isBaseApi;
+    const method = options.method || 'get';
+    const loading = document.querySelector('#ajaxLoading');
     if (options.data && options.data.isShowLoading) {
-      loading = document.querySelector('#ajaxLoading');
       loading.style.display = 'block';
     }
     return new Promise((resolve, reject) => {
       axios({
-        url: options.url,
-        baseURL: baseApi,
-        method: options.method || 'get',
-        params: (options.data && options.data.params) || '',
+        url: method.toLowerCase() === 'get' ? options.url + options.data.params : options.url,
+        baseURL: isBaseApi ? baseApi : '',
+        method,
+        data: options.data,
         timeout: 3000
       }).then(response => {
         loading.style.display = 'none';
         if (response.status === 200) {
           let res = response.data;
-          if (res.code === 20000) {
+          console.log(res);
+          if (res.code === 20000 || res.success) {
             resolve(res)
           } else {
             Modal.info({
               title: '提示',
-              content: res.msg
+              content: res.msg || res.info
             })
           }
         } else {

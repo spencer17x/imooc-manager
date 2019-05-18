@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import { Card, Button, Radio } from "antd";
+import React, {Component} from 'react';
+import {Card, Button, Radio} from "antd";
 import './ui.less';
 
 export default class Buttons extends Component {
   state = {
     loading: true,
     size: 'default'
-  }
-  render () {
+  };
+
+  render() {
     return (
       <div>
         <Card title="基础按钮" className="card-wrap">
@@ -50,16 +51,17 @@ export default class Buttons extends Component {
           <Button type="danger" size={this.state.size}>Imooc</Button>
         </Card>
       </div>
-    )
+    );
   }
+
   handleCloseLoading = () => {
     this.setState({
       loading: false
-    })
-  }
+    });
+  };
   handleChange = (e) => {
     this.setState({
       size: e.target.value
-    })
-  }
+    });
+  };
 }
