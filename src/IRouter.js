@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import App from './App';
 import Admin from './admin';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
-import { createBrowserHistory } from "history";
+import { createHashHistory } from "history";
 import Common from './Common';
 import Loadable from 'react-loadable';
 import Loading from './LoadingC';
@@ -108,7 +108,7 @@ let Permission = Loadable({
   loading: Loading
 })
 
-const history = createBrowserHistory();
+const history = createHashHistory();
 
 export default class IRouter extends Component {
   render () {
@@ -147,7 +147,7 @@ export default class IRouter extends Component {
                 </Switch>
               </Admin>
             }/>
-            <Router path="/common" render={({match}) => 
+            <Route path="/common" render={({match}) => 
               <Common>
                 <Route path={`${match.url}/order/detail`} component={OrderDetail}/>
               </Common>

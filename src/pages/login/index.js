@@ -48,16 +48,17 @@ export default class Login extends Component {
   loginSubmit = () => {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        const userInfo = await axios.ajax({
-          url: '/api/user',
-          isBaseApi: false,
-          method: 'POST',
-          data: {
-            name: values.user_account,
-            password: +values.user_password
-          }
-        });
-        userInfo.success && this.props.history.push('/admin/home');
+        // const userInfo = await axios.ajax({
+        //   url: '/api/user',
+        //   isBaseApi: false,
+        //   method: 'POST',
+        //   data: {
+        //     name: values.user_account,
+        //     password: +values.user_password
+        //   }
+        // });
+        // userInfo.success && this.props.history.push('/admin/home');
+        this.props.history.push('/admin/home')
       }
     })
   }

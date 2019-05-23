@@ -19,15 +19,19 @@ export default class Axios {
 
   static ajax(options) {
     const baseApi = 'https://easy-mock.com/mock/5c07d5c95a35be334b3a4f09/mockapi';
-    const isBaseApi = options.isBaseApi;
+    const isBaseApi = options.isBaseApi === undefined ? true : options.isBaseApi;
     const method = options.method || 'get';
     const loading = document.querySelector('#ajaxLoading');
+    const paramsStr = Object
+      .entries(options.data.params)
+      .map(o => o.join('='))
+      .join('&');
     if (options.data && options.data.isShowLoading) {
       loading.style.display = 'block';
     }
     return new Promise((resolve, reject) => {
       axios({
-        url: method.toLowerCase() === 'get' ? options.url + options.data.params : options.url,
+        url: method.toLowerCase() === 'get' ? options.url + '?' + paramsStr : options.url,
         baseURL: isBaseApi ? baseApi : '',
         method,
         data: options.data,
