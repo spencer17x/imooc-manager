@@ -40,7 +40,6 @@ export default class Axios {
         loading.style.display = 'none';
         if (response.status === 200) {
           let res = response.data;
-          console.log(res);
           if (res.code === 20000 || res.success) {
             resolve(res)
           } else {
