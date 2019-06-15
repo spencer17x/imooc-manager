@@ -1,8 +1,8 @@
-import * as contants from './constants'
+import * as constants from './constants'
 
 export const handleChangeTitle = (title) => {
   return {
-    type: contants.CHANGE_TITLE,
+    type: constants.CHANGE_TITLE,
     title
   }
 }
