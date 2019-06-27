@@ -7,7 +7,7 @@ const menuObject = menuConfig.reduce((previousValue, currentValue) => {
   previousValue.push(o);
   return previousValue;
 }, []);
-const title = menuObject.find(m => m.key === path).title;
+const title = menuObject.find(m => m.key === path) ? menuObject.find(m => m.key === path).title : '首页';
 
 const defaultState = {
   title
